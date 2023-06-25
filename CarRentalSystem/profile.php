@@ -23,12 +23,11 @@ if(!empty($_FILES['image']['name']) && $_FILES['image']['error'] == 0 && $_FILES
 
   $username = addslashes($_POST['username']);
   $email = addslashes($_POST['email']);
-  $password = addslashes($_POST['password']);
-
+  
   if($image_added == true){
-      $query = "update users set username = '$username',email = '$email',password = '$password',image = '$image' where user_id = '$userid' limit 1";
+      $query = "update users set username = '$username',email = '$email',image = '$image' where user_id = '$userid' limit 1";
   }else{
-      $query = "update users set username = '$username',email = '$email',password = '$password' where user_id = '$userid' limit 1";
+      $query = "update users set username = '$username',email = '$email' where user_id = '$userid' limit 1";
   }
 
   $result = mysqli_query($con,$query);
@@ -46,7 +45,7 @@ if(!empty($_FILES['image']['name']) && $_FILES['image']['error'] == 0 && $_FILES
   }
 elseif($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['action']) && $_POST['action'] == 'delete' )
  {   $id = $_SESSION['user_info']['user_id'];
-     $query = "delete from users where user_id = '$id' limit 1";
+     $query = "delete from user where user_id = '$id' limit 1";
        $result = mysqli_query($con,$query);
        if(file_exists($_SESSION['user_info']['image'])){
        unlink($_SESSION['user_info']['image']);
