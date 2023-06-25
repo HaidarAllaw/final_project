@@ -20,18 +20,12 @@
           
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" required><br>
-          <label for="role">Role:</label>
-          <select name="role" required>
-             <option></option>
-             <option>Admin</option>
-             <option>User</option>
-          </select>
-
+      
           <label for="image">Choose a profile picture:</label>
           <input type="file" id="image" name="image" accept="image/*"><br>
           <button type="submit">Register</button>
         </form>    
-        <a href="login.php"><button style="margin-top: 5%;">RETURN TO LOG IN</button></a>
+        <a href="login.php"><button style="margin-top: 5%;">LOG IN</button></a>
       </div>
      
 </body>
