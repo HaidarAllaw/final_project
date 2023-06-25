@@ -1,5 +1,6 @@
 <?php  include('db_config/connect.php');
 session_start();
+$userid=$_SESSION['user_info']['user_id'];
 require "header.php";
 if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['action']) && $_POST['action'] == 'delete')
 {   $id = $_GET['id'];
@@ -124,12 +125,16 @@ header("Location: home.php");
 <form method="post"  enctype="multipart/form-data" style="margin: auto;padding:10px;width:50%">
  <img src="<?php echo $_SESSION['car_info']['image']?>" style="margin-top:3%;width: 100px;height: 100px;object-fit: cover;margin: auto;display: block;">
   image: <input type="file" name="image" accept="image/*"><br>
+  <label for="name">Car Name:</label>
   <input value="<?php echo $_SESSION['car_info']['name']?>" style="margin-top:3%" type="text" name="name" required><br>
+  <label for="name">Modal:</label>
   <input value="<?php echo $_SESSION['car_info']['model']?>" style="margin-top:3%" type="text" name="model"  required><br>
+  <label for="name">Year:</label>
   <input value="<?php echo $_SESSION['car_info']['year']?>"  style="margin-top:3%" type="text" name="year"  required><br>
+  <label for="name">Price:</label>
   <input value="<?php echo $_SESSION['car_info']['rental_price']?>" style="margin-top:3%"  type="text" name="rental_price"  required><br>
   <input type="hidden" name="action" value="edit">
- <button type="submit" style="margin-top:3%">Save</button>
+ <button style="margin-top:3%">Save</button>
  <a href="home.php"><button type="button">Cancel</button></a>
 </form>
 </div>
@@ -147,7 +152,7 @@ header("Location: home.php");
   <img src="<?php echo $_SESSION['car_info']['image']?>" style="width: 100px;height: 100px;object-fit: cover;margin: auto;display: block;">
   <h3><?php echo $_SESSION['car_info']['name']?></h3>
   <input type="hidden" name="action" value="delete">
-  <button type="submit">Delete</button>
+  <button>Delete</button>
   <a href="home.php"><button type="button">Cancel</button></a>
   </form>
 </div>
@@ -158,11 +163,7 @@ header("Location: home.php");
  $query = "select * from car where car_id = $id";
  $result= mysqli_query($con,$query);
  if(mysqli_num_rows($result) > 0){ $row=mysqli_fetch_assoc($result);
- $_SESSION['car_info']=$row;}
- if($_SESSION['car_info']['availability']==0){
-  ?>
-   <h2 style="text-align: center;">car is not available</h2><div style="margin: auto;max-width: 600px;text-align: center;">
- <?php } else {?>
+ $_SESSION['car_info']=$row;}?>
   <div style="margin-top:10%">
   <h2 style="text-align: center;">Are you sure you want to rent this car??</h2><div style="margin: auto;max-width: 600px;text-align: center;">
   <form method="post" enctype="multipart/form-data" style="margin: auto;padding:10px;">
@@ -175,13 +176,13 @@ header("Location: home.php");
   <a href="home.php"><button type="button" style="margin-top: 15px;">Cancel</button></a>
   </form>
 </div>
-<?php } ?>
+
 
 
 <?php else:?>
 <div class="container">
-<?php if($_SESSION['user_info']['role']=='Admin'){?>
-<h2>Admin Panel</h2>
+<?php if($_SESSION['user_info']['role']=='Owner'){?>
+<h2>Owner Panel</h2>
 <a href="newcar.php"><button>Add Car</button></a>  <a href="rental.php"><button>See Rental</button></a><br><br>
 <?php } else {?>
 <h2>Car List</h2> 
@@ -209,7 +210,7 @@ header("Location: home.php");
     echo "<td>" . $row['rental_price'] . "</td>";
     echo "<td><img src='" . $row['image'] . "' alt='Car Image' width='100'></td>";
     echo "<td>" . ($row['availability'] ? 'Yes' : 'No') . "</td>";
-    if($_SESSION['user_info']['role']=='Admin'){
+    if($_SESSION['user_info']['role']=='Owner'){
     echo "<td><a href='home.php?action=edit&id=" . $id . "'><button>Edit</button></a> <a href='home.php?action=delete&id=" . $id . "'><button>Delete</button></a></td>";
     }
     else
